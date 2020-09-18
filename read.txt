@@ -1,0 +1,691 @@
+Section = 35
+Video = 309
+time =
+	
+==============================================
+Section 4 vid 6
+www.typescriptlang.org
+
+Section 4 vid 7
+ONLY edit the TypeScript file (.ts)
+DO NOT edit the JavaScript file (.ts)
+
+Remember .js is generated everytime by the TypeScript compiler
+
+
+Section 4 vid 8
+Defining Variables - Overview
+let <variableName>: <type> = <initial value>;
+example= 
+let found: boolean = true;
+let grade: number = 88.6;
+
+Type: any
+let myData: any = 50.0;
+then we want to assign other value type
+myData = false;
+myData = 'Eric';
+....but be careful, you lose type-safety. OK?
+When would we use type any?
+So if you're setting up a list, or an array.
+
+
+Section 5 vid 13
+Even thought we create an error on code, example if we put a private variable in class, then we try to call them when we instance an object from the class, when we run: tsc ***.ts on command prompt, it still produce the js file.
+
+If we still want to run the error file, use --noEmitOnError. Like this example:
+tsc --noEmitOnError ***.ts
+with that command, it won't produce the file if there's an error on .ts file
+
+TypeScript: Accessors - Get / Set
+This is a special Getter/Setter in TypeScript
+
+instead of using
+public getFirstName(): string {
+  return this.firstName;	
+}
+then it can be called from the object
+<sampleObject>.getFirstName()
+
+use the Getter Accessor
+public get firstName(): string {
+  return this._firstName;
+}
+then it can be called from the object
+<sampleObject>.firstName --> di belakang, typescript tahu kalau kita sedang
+memanggil (ini akan menggunakan get accessor)
+
+lalu utk set nya
+public set firstName(value: String) {
+  this._firstName = value;
+}
+maka ketika mengisi value dr object, tinggal gini
+<sampleObject>.firstName = "sample"; (maka di belakang layar dia akan menggunakan set accessor)
+
+the get/set accessors feature is only supported in ES5 and higher,
+jadi jika kita menggunakan fitur ini, maka ketika kita run file, harus seperti ini:
+tsc --target ES5 --noEmitOnError Customer.ts
+
+namun jika kita tidak ingin manual ketik code ES5 dan noEmitOnError,
+kita bisa menyimpan settingan tersebut pada tsconfig.json di base directory kerja kita.
+utk membuatnya menggunakan command, ketik:
+tsc --init
+
+Section 5 vid 17
+Ketika kita sudah men-setting tsconfig.json, maka kita hanya menjalankan command: tsc
+dan dia akan menjalankan seluruh file .ts di directory tersebut
+
+
+
+Sec 6 Vid 25
+Abstract Class
+An Abstract Class represents a general concept
+for example: Shape, Vehicle, Computer, etc.
+- Can't create an instance of an abstract class
+- Abstract Class can also have abstract method
+- Abstract method must be implemented by concrete subclasses
+
+
+Sec 6 Vid 27
+Interfaces
+- Define an interface with a method contract
+- Classes implement the interface accordngly
+- A class CAN implement multiple interfaces
+
+
+
+Sec 7 Vid 29
+Install Angular CLI 
+npm install -g @angular/cli
+
+creating new 
+ with Angular CLI
+ng new 
+
+
+Sec 7 Vid 32
+Behind the Scenes of An Angular Project
+<app-root></app-root> --> replace this tag / selector with template of the componenr (similar to an "include")
+
+@Component is an Angular "Decotator" similar to Annotation in Java (you know it)
+
+General files 
+sales-person-list.component.ts --> the component class
+sales-person-list.component.html --> the component template HTML
+sales-person-list.component.css --> the component private css
+sales-person-list.component.spec.ts --> the unit test specifications
+
+
+Sec 7 Vid 34
+Generate New Component with CLI
+ng generate component sales-person-list
+
+Sec 7 Vid 35
+Generate Class with CLI
+ng generate class sales-person-list/SalesPerson
+
+In Angular World, developers commonly use "public" properties / access modifier as their variable 
+
+
+
+
+Sec 9 vid48
+Create project spring boot in https://start.spring.io/
+don't forget to include dependencies when create the spring boot project on that link:
+Spring Data JPA, Rest Repositories, MySQL Driver, Lombok (Java annotation library which helps to reduce boilerplate)
+
+Section 9 Vid 51
+JPA Repositories and Spring Data REST for REST APIs
+
+
+Sec9 Vid53
+Configure for Read Only with Config implemented interface RepositoryRestConfigurer
+
+
+Section 10 vid 54 to vid 60
+1. Create a new project using Angular CLI
+ng new angular-ecommerce
+
+2. Create Angular component for product-list
+ng generate component components/product-list (components -> subdirectories)
+
+3. Develop TypeScript class for Product
+ng generate class common/product (common-> subdirectories)
+
+4. Create Angular service to call REST APIs
+ng generate service services/product
+- Angular "Service" is code developed in TypeScript
+- Service is a helper class that provides desired functionality
+- Part of your Angular application and it runs in the web browser client-side. (don't let the word service fool you here, it's really just a reusable class or a helper class that runs as part of our Angular app and it runs in the web browser on the client-side.).
+(CAUTION) on minutes 4:47, he explains the function of all properties in class product.service.ts.
+@Injectable --> class can be injected globally, so you can use it anywhere
+
+5. Develop Angular to subscribe to data
+ngOninit() is similar to @PostConstruct, once the given component is initialized, we call this.listProducts()
+
+6. Display the data in an HTML page
+using loop *ngFor
+
+7. Add CrossOrigin support to Spring Boot
+- By default, this coding will fail
+- Web browsers will not allow script code to call APIs not on same origin (jadi web browser tidak meng-allow code utk manggil API jika tidak sama Same-origin)
+- Known as Same-origin policy
+- We can relax this by adding "Cross-Origin Resource Sharing (CORS)" on server side application
+- Same-origin is composed of: schema/protocol, hostname, port number
+Common pitfall:
+"Access to XMLHttpRequest at 'http://localhost:8080/api/products' from origin 'http://localhost:4200' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource." --> solve solution, add @Crossorigin in Spring Boot app
+
+@CrossOrigin("http://localhost:4200") // this server that our Angular app (frontend) is running on. Accept calls from web browser scripts for this origin
+
+we have a different origin, and the reason it's a different origin here is because the port numbers are different,
+where the backend running on port 8080 and frontend running on port 4200, so we need this @CrossOrigin annotation
+
+Origin is  more than just the hostname. Origin is:
+protocol + hostname + port
+
+Same origin
+http://localhost:4200 == http://localhost:4200
+
+Different origin
+http://localhost:4200 != http://localhost:8080
+
+
+.subscribe() -> it executes the observal, it's a method that comes from rxjs library which Angular is using internally.
+
+
+Section 11 vid 63
+Release 2.0
+- Online Shop Template Integration
+- Search for products by category
+- Search for products by text box
+- Master / detail view of products
+- Pagination support for products
+-Add products to shopping cart (CRUD)
+- Shopping cart check out
+
+Section 11 vid 66-67
+Dev Process
+1. Download the HTML template starter files
+2. Install Bootstrap CSS Styles locally using npm 
+   npm install bootstrap
+   npm install @fortawesome/fontawesome-free
+3. Add local custom CSS styles to Angular src/styles.css files
+4. Integrate template files into Angular app
+5. Add support for icons and logos
+6. Enchance our application with product images
+
+
+
+
+Sec 11 Vid 67
+All css settings on  angular.json in our base project, it written in "styles", you can add another css you can use
+
+to avoid caching issue.. give unique query param (jadi kalo kita ganti icon/image pada html, lalu tidak langsung berubah waktu kita jalankan)
+
+
+
+Section 12 vid 73
+Router = Main routing service. Enables navigation between the views based on the user actions.
+Route = Maps a URL path to a component.
+RouterOutlet = Acts as a placeholder. Renders the desired component based on the route. --> <router-outlet></router-outlet>
+RouterLink = Link to specific routes in your application
+ActivatedRoute = The current active route that loaded the component. Useful for accessing route parameters.
+
+{path: '', redirectTo: '/products', pathMatch: 'full} --> full means match on this exactly, default pathMatch is prefix
+
+{path: '**', redirectTo: '/products', pathMatch: 'full}  --> ** means ini akan match apapun selain routing yg ada di atasnya
+ORDER of routes is IMPORTANT, first match wins, start from most specific to generic
+
+
+Sec 12 vid 75
+Page<Product> findByCategoryId(@RequestParam("id") Long id, Pageable pageable) --> support for pagination
+Page us a sublist of a list of objects, has information such as totalElements, totalPages, currentPosition etc
+
+
+
+Section 12 vid 77
+
+<router-outlet></router-outlet> -->  Acts as a placeholder. Renders the desired component based on the route. 
+
+routerLink="/category" --> Link to specific routes in your application
+
+this.route.snapshot.paramMap.has("id");
+route -> use the activated route
+snapshot -> state of route at this given in time
+paramMap -> Map of all the route parameters
+
+
+Section 14 vid 89
+- Spring Data REST and Spring Data JPA supports "query methods"
+- Spring will construct a query based on method naming conventions
+
+
+findByNameContaining -> "Containing" similar to SQL: "LIKE"
+
+
+Page<Product> findByNameContaining(@RequestParam("name") String name, Pageable pageable);
+Query di atas akan seperti:
+SELECT * FROM product p WHERE p.name LIKE CONCAT('%', :name , '%')
+
+
+Section 14 Vid 90
+<input #myInput type="text"
+	(keyup.enter)="doMyCustomWork(myInput.value)" />
+
+#myInput, # is a symbol of a reference , provides access to the element
+maka method doMyCustomWork() pada input dapat menerima nilai value dari input yg sudah di kasih reference #myInput
+
+
+Section 14 Vid97
+
+products?.length == 0
+
+tanda "?" dapat disebut safe navigation operator, Guards against null and undefined values in property paths
+maka ini adalah cara pintas utk avoiding null point
+
+maka logic di atas  berarti: jika product null/undefined or products.length == 0 maka kondisi terpenuhi
+
+
+Section 15 Vid 100
+Nah, pada lesson x ini, kita ada sedikit case, jadi waktu di retrieve data products di component product-list-grid lalu kita memanggil property id, namun tidak bisa,
+padahal data yg di dapat dari API Spring ada data id nya, namun di model class pada angular kita, kita tidak men-set property id, maka itu patokan si Angular ini, bukan data dari hasil API Spring saja,
+lihat pada video ini untuk penjelasannya:
+(Angular Language Service
+https://www.udemy.com/course/full-stack-angular-spring-boot-tutorial/learn/lecture/18296268#questions
+
+Install Extension Angular Language Service pada IDE VSCode agar dapat code error (ini versi IDE VSCode lama, VSCode baru sudah ada error pada id)
+
+Lalu utk solve problemnya, kita tambahkan property id pada model class product di product.ts
+
+
+section 15 vid 102
+
+Angular convert string to number
+https://stackoverflow.com/questions/66052793/angular-typescript-convert-string-to-number
+
+
+section 15 vid 104
+Race conditions, jadi ada error di background, ketika aplikasi di jalankan, ada property product yg dimana dia membutuhkan
+object product sebelum dia di sign ke data pada file product-details.component.ts
+karena kalau tidak di buat object product, maka akan undefined pada file htmlnya
+
+
+Section 16 vid 106
+Pagination overview,
+Spring support pagination, we also need create pagiantion on frontend
+
+http://localhost:8080/api/products?page=0&size=10 -> get the first page, with pagesize of 10
+http://localhost:8080/api/products?page=1&size=10 -> get the second page, with pagesize of 10
+REMEMBER spring pagination is zero based, pages are 0-based. first page is at postion 0
+
+Pagination with Angular: https://ng-bootstrap.github.io/
+Pagination component on Angular:
+page: the page number to access. 1-based.. defaults 1
+pageSize: the item size of the page
+collectionSize: the total number of items
+pageChange: Event handler for the page change events
+
+Section 16 vid 107
+Backend (spring) 0-based and frontend (Angular) 1-based
+
+
+Section 16 vid 109
+Install Ng Pagination
+1. ng add @angular/localize
+2. npm install @ng-bootstrap/ng-bootstrap
+
+
+Section 16 vid 116
+Setting Max Size,
+jadi ini case-nya jika  misalnya kita set utk pageSize 2 per page, maka dia tidak akan mencetak semua nomor halaman,
+dia akan menampilkan beberapa nomor halaman dan di batasi ... hingga halaman terakhir
+
+[boundaryLinks]="true"
+ini fitur untuk kasih button first dan last page
+
+
+Section 17 Video 123
+
+Subject is a subclass of Observable
+we can use subject to publish events in our code.
+the event will be sent to all of the subscriber
+
+
+Section 18 vid 140
+Add message if shopping cart is empty
+
+
+Section 18 vid 142
+Add increment & decrement button to cart details quantity (no function in this section)
+
+
+Section 19 vid 147
+Angular provides two types of forms
+- Reactive forms (complex forms, can be easily reused and tested)
+- Template-driven forms (simple forms)
+
+for comparison, see: https://angular.oi/guide/forms-overview
+
+
+
+Section 19 vid 150
+FormGroup -> form controls of form elements 
+
+
+
+Section 20 vid 163
+from another example on join column (spring bot) --> actually from Learn Spring Section 3 vid 21
+We have 2 tables that would be joining
+Employees and Project --> Many employees could be assign to one projects and one project allows many employees to assigned by
+
+So here the view in the model entity
+
+In Project entity:
+@OneToMany(mappedBy="theProject") 
+private List<Employee> employees;
+* one project could be assigned to many employee, remember, mappedBy harus di isi persis dgn nama property yg di define pada table yg ingin di relation kan
+
+in Employee entity:
+@ManyToOne
+@JoinColumn(name="project_id") 
+private Project theProject;
+* would be create the field on Employee table as the given name 'project_id', jadi nanti nama field pada table adl 'project_id'
+
+jadi pada class entity, utk table yg @ManyToOne menggunakan @Data pada class entitynya, sedangkan join table satunya dengan @OneToMany dapat menggunakan @Setter & @Getter pada class entity-nya.. pada contoh di sini, yg menggunakan @ManyToOne adalah entity state dan utk @OneToMany adalah country
+
+
+Section 21 vid 177
+validators.email vs validators.pattern
+
+validators.email is too weak, joe@email dianggap valid meski ga ada domain .com .us .sg dll
+use validators.pattern instead
+
+these two validators ONLY check the FORMAT, doesn't verify if email address is real
+
+
+Only display validation errors if user has interacted with the form:
+- When the user changes field value, the control is marked as 'dirty' --> firstName.dirty
+- When the field loses focus, the control is marked as 'touched' --> firstName.touched
+ 
+'^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$'
+
+explained -->  ^[a-z0-9._%+-]+ >> match any combination of letters and digits, optional period
+	 --> [a-z0-9.-]+\\. >> match any combination of letters and digits, with period
+	--> [a-z]{2,3}$ >> domain extension 2-4 letters
+
+
+Section 21 vid 181 
+this.checkoutFormGroup.markAllAsTouched(); // Touching all fields triggers the display of the error messages
+
+
+Section 21 vid 183 - Custom Validation Rule
+
+
+Section 22 vid 194
+ReplaySubject  >> keep a buffer of previous events. Sends previous events to new subscribers
+http://www.luv2code.com/rxjs-replay-subject
+
+ReplaySubject is not a perfect solution to a new subscribers, because actually we don't care about the intermediate events, we only care about the latest results
+
+
+BehaviorSubject is a subclassof subject
+- Has a notation of "current value"
+- Stores the latest message /event... and sends to new subscribers
+
+So BehaviorSubjects are useful for representing values over time.
+
+For instance, an event stream of birthdays is a subject
+but the stream of a person's age would be a BehaviorSubject.
+
+http://www.luv2code.com/rxjs-behavior-subject
+
+So using that analogy, a stream of a person's age.
+So you meet a young person.
+Hey, how old are you?
+14, 17, 18, okay, great.
+That's the only value you need.
+You only need to know their latest age or their current age.
+You really don't care about their age of five, three or two,
+only their latest age.
+So that's the idea of using a BehaviorSubject one use case.
+
+
+Section 23 vid 199
+Download save order database
+www.luv2code.com/save-the-order-starter-files.zip
+
+
+Section 25 vid 219
+In the modern security world, there are a couple of key terms or concepts:
+- Authentication --> proses validasi user (username, password) or (Token, pin) of (Finger print,  retina scan) for login
+- Authorization --> process of determining the action a user, commonly understood as roles: guess, user & admin 
+- OAuth 2 (www.oauth.net) --> Authorization framework that enables app to have limited access to a resource on behalf of a resource owner (user). Sebagai contoh jika kamu ingin men-share images dari google drive ke another app (penjelasan di menit 2:08)
+- OpenID Connect (OIDC) (www.openid.net/connect) --> identity layer on top of OAuth 2
+- JSON Web Tokens (JWT) (www.jwt.io) :
+ * Open standard that defines self-contained way of describing tokens
+ * Secure and digitally signed to guarantee integrity
+ * Used by OAuth and OpenID Connect
+
+
+Section 25 vid 221
+Okta.com provides a cloud based authorization server + platform (no need credit card)
+
+Section 25 vid 223
+PKCE: Proof Key for Code Exchange (at 3:18)
+for more detail about PKCE --> http://www.luv2code.com/okta-pkce
+
+Section 25 vid 224
+Documentation for Okta Components
+- Okta Sign-In Widget: https://github.com/okta/okta-signin-widget
+- Okta Angular SDK: https://github.com/okta/okta-angular
+- Okta JavaScript SDK: https://github.com/okta/okta-auth-js
+
+
+Section 25 vid 225
+Create a new app integration (okta.com)
+- choose applications/applications from menu
+- sign-in method -> OIDC - OpenID Connect
+- application type -> single-page application
+
+
+ecommercejoe27@proton.me
+Bisaterusdah27
+
+
+Section 25 vid 234
+ignore the warning when run frontend;
+open angular.json
+add entry key and value to options from projects/angular-ecommerce/architect/options
+
+
+Section 27 vid 239
+Two types of Web Storage 
+- Session storage
+Data is stored in web browser's memory
+Stores the data in the web browser's session (memory)
+Data is never sent to the server 
+tiap tab browser memiliki session masing2, data tidak dapat di share antar tabs
+Ketika tab browser di close, maka data is no longer available
+
+
+
+- Local Storage
+Data is stored on client side computer
+Stores the data locally on the client web browser computer
+Data is never sent to the server
+Data is available to the tab of the same browser for same origin, bisa share data antar tab pada browser
+App must read data again, normally with a browser refresh
+Data persist even if the web browser is closed
+No experation date on data
+can clear data using JavaScript or Clearing Web browser cache
+For local storage.. data is NOT shared between different web browser, jd data localstorage pd chrome tidak bisa di akses oleh mozilla dan sebaliknya
+
+
+Data Scoping
+The data is scoped to a given "origin", jadi ini terkait scope data itu sendiri berdasarkan base origin-nya
+
+
+Section 28 vid 248
+Spring Data REST has different detection strategies
+ALL, DEFAULT, VISIBILITY, ANNOTATED
+
+for this, we use ANNOTATED for our Spring Data REST Detection Strategy
+
+
+
+Section 28 vid 252
+Disable HTTP Patch method
+
+spring.data.rest.detection-strategy=ANNOTATED
+dengan settingan ini, maka api yg bisa dipanggil yg hanya menggunakan @RepositoryRestResource
+
+
+
+Section 30 vid 267
+coba jalankan api http://localhost:8080/api/orders/search/findByCustomerEmail?email=ecommercejoe27@proton.me di postman dan browser, maka akan mendapatkan error 401
+
+when we run the application and login, try to open the orders page, then you can find 401 unauthorized. Why? padahal kita login? ya kita hanya login di bagian frontend, namun pada saat itu, request dr frontend ke backend kita butuh meng-update access token dengan HTTP request agar tidak 401
+
+
+Section 30 vid269
+www.luv2code.com/angular-additional-resources
+
+Section 31 vid 274
+by minutes 3:10
+can't purchase order because CSRF is enable, so disabled it since we are not using cookies for session tracking
+
+Section 32 vid 274
+Secure Communication with HTTPS - Angular Frontend
+
+Section 32 vid 275
+HTTPS uses the TLS protocol (Transport Layer Security). TLS is more secure than SSL
+
+Using HTTPS
+- There are no changes required to the source code
+- configure your server to run using secure keys and certificate
+- then you'll be able access your site with https
+
+Keys and Certs
+- To run securely, you will need keys and certificates
+ - provides proof of your server's identity (domain name)
+ - reviewed and signed by a trusted certificate authority (godaddy, verisign, amazon, etc)
+- In the real world, you normally have to pay for a certificate
+ - for dev/demo purposes, we are going to save money
+ - we will create self-signed certificates
+
+source for more details: www.luv2code.com/https-additional-resources
+
+section 32 vid 276
+follow the instructions on www.luv2code.com/openssl-setup (DONT FORGET TO RUN THIS ON ANOTHER LOCAL COMPUTER)
+then it will produces file localhost.crt & localhost.key on folder ssl-localhost
+
+Section 33 vid 279
+Secure communications with HTTPS - Spring Boot Backend
+
+Java Keystore
+- Java provides support for keys and certificates
+- A keystore is a file that contains keys and certificates
+- The entries are associated with an alias and password
+
+Section 33 vid 280
+reference: www.luv2code.com/keytool-steps
+
+this will generate file in your project src/main/resources/wilson-keystore.p12
+run on command
+keytool -genkeypair -alias wilson -keystore "C:\Java\ecommerce-project\02-backend\spring-boot-ecommerce\src\main\resources\wilson-keystore.p12" -keypass secret -storeType PKCS12 -storepass secret -keyalg RSA -keysize 2048 -validity 365 -dname "C=US, ST=Pennsylvania, L=Philadelphia, O=luv2code, OU=Training Backend, CN=localhost" -ext "SAN=dns:localhost"
+keytool -list -v -alias wilson -keystore "C:\Java\ecommerce-project\02-backend\spring-boot-ecommerce\src\main\resources\wilson-keystore.p12" -storepass secret
+
+NOTED: For Maven Projects
+Files in src/main/resources are automatically added to the classpath
+so in this case we put the value:
+server.ssl.key-store=classpath:wilson-keystore.p12
+in this case, wilson-keystore.p12 is located in src/main/resources in our project
+
+after run backend, then access from browser: https://localhost:8443/api/products
+
+setting in chrome to allow self-signed certs on localhost ssl, jadi page chrome akan melewatkan peringatan self-signed confirmation
+chrome://flags
+then type allow-insecure-localhost on input column there, and simply enabled the option if you found it
+
+DON'T FORGET TO CREATE wilson-keystore.p12 if you want to clone this project on your machine
+
+
+section 34 video 284
+environment.ts -> default environment
+environtment.prod.ts -> prod environment
+
+npm start -> will using environment.ts
+npm start -- --configuration=production -> will using environment.prod.ts
+
+Behind the scenes 
+How does it work behind the scenes?
+- Environment configurations are defined in: angular.json
+- Angular CLI tool added entries for "production" configuration in the file initially
+(you can check them in file angular.json)
+How are the filenames mapped to an environment
+- In the "serve" section of angular.json, defines runtime support
+(you can check them in file angular.json, in "serve" parameter), referenced from the command-line when we start the app:
+npm start -- --configuration=production,
+so configuration pada serve tadi akan di mapping dengan configuration sebelumnya
+
+Additional resources : www.luv2code.com/angular-optimization-configuration
+
+run angular project with qa configuration:
+npm start -- --configuration=qa
+
+
+Section 35 vid 90
+
+Payment processors
+- Large number of payment processors in the market
+- Stripe
+- Paypal, etc...
+in this lecture, we are going to use Stripe (Stripe provide a modern API)
+
+Section 35 vid 291
+- Stripe provides an API for processing credit card payments
+- REST API available
+- Libraries also available for JS, Java, .NET, PHP, Go Etc...
+source: https://stripe.com/docs
+
+Sensitive Data
+When dealing with credit card data, you must protect cardholder data
+Your DevOps process must be PCI compliant. Payment Card Industry Data Security Standard (PCI DSS), this standard ensures that all companies accept, process, store and transmit data in a secure environment
+
+Notes: NEVER sending credit card data to our own server or storing it in memory or our own database
+Additional resources: 
+https://stripe.com/docs/security
+https://stripe.com/guides/pci-compliance
+
+
+Section 35 vid 292
+Stripe Integration: Checkout Form
+ecommerce.app  -->  Stripe Servers  --> Bank
+source: https://stripe.com/payments/checkout
+
+Section 35 vid 293
+Stripe integration: Stripe Elements
+Source: https://stripe.com/payments/elements
+
+
+Section 35 vid 296
+wilsonmangunsong@proton.me 1wordkey
+
+go to homepage stripe.com then choose developers -> libraries & sdk
+
+Section 35 vid 298
+Why did we use type int to amount in class PaymentInfo?
+Lalu bagaimana untuk amount $12.54? apakah bisa digunakan jika menggunakan int? Well in the Stripe API apa yg mereka lakukan adalah mereka menggunakan denominasi terendah pada currency and itu merepresentasikan amount.
+For example = $12.54
+1 cent adl denominasi terendah pada USD
+- 1 cent = 0.01 dollars
+- 100 cents = 1 dollars
+So..
+$12.54 * 100 = 1254 cents ==> use the amount of 1254 cents
+source: https://stripe.com/docs/api/payment_intents
+
+
+Section 35 vid 304
+kita load Stripe cdn pada index
+<script src="https://js.stripe.com/v3" async></script>
+sync disana berarti script di download secara paralel untuk di parsing ke halaman
